@@ -216,20 +216,20 @@
 
       if (reduce) return;
 
-      // Order pixels left-to-right (by x) with a touch of randomness for an organic build-up.
+      // Order pixels top-to-bottom (by y) with a touch of randomness for an organic build-up.
       pixels.forEach(function (p) {
         var b = p.getBBox();
-        p._x = b.x + b.y * 0.15;
+        p._y = b.y + b.x * 0.15;
       });
-      pixels.sort(function (a, b) { return a._x - b._x; });
+      pixels.sort(function (a, b) { return a._y - b._y; });
 
       var span = pixels.length;
       pixels.forEach(function (p, i) {
-        var base = (i / span) * 0.9;              // left-to-right sweep over ~0.9s
+        var base = (i / span) * 0.9;              // top-to-bottom sweep over ~0.9s
         var jitter = (Math.sin(i * 12.9898) * 43758.5453 % 1) * 0.08; // deterministic pseudo-random
         var d = base + Math.abs(jitter);
         p.style.setProperty("--d", d.toFixed(3) + "s");
-        // shimmer ripple starts after assemble, staggered by x position
+        // shimmer ripple starts after assemble, staggered top-to-bottom
         p.style.setProperty("--s", (1.6 + (i / span) * 1.2).toFixed(3) + "s");
         p.classList.add("px");
         // force reflow-safe add of animation class
